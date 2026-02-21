@@ -1,0 +1,68 @@
+{
+    "name": "PWA Demo - Android Features",
+    "short_name": "PWA Demo",
+    "description": "Eine Demo-App die zeigt, was PWAs auf Android alles koennen",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#121212",
+    "theme_color": "#6200ee",
+    "icons": [
+        {
+            "src": "icons/icon-72.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-96.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-152.png",
+            "sizes": "152x152",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["utilities", "education"],
+    "lang": "de",
+    "shortcuts": [
+        {
+            "name": "Kamera oeffnen",
+            "url": "/#camera-card",
+            "icons": [{"src": "icons/icon-96.png", "sizes": "96x96"}]
+        },
+        {
+            "name": "Position ermitteln",
+            "url": "/#geo-card",
+            "icons": [{"src": "icons/icon-96.png", "sizes": "96x96"}]
+        }
+    ]
+}

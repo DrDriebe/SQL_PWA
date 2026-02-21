@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#6200ee">
+    <meta name="description" content="PWA Demo App - Android Features Showcase">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <title>PWA Demo - Android Features</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>PWA Demo</h1>
+            <span class="subtitle">Android Features Showcase</span>
+        </div>
+        <div id="network-badge" class="badge online">Online</div>
+    </header>
+
+    <main>
+        <!-- Install Banner -->
+        <section id="install-section" class="card install-card" style="display:none;">
+            <div class="card-icon">📲</div>
+            <div class="card-body">
+                <h2>App installieren</h2>
+                <p>Installiere diese App auf deinem Homescreen fuer das volle Erlebnis!</p>
+                <button id="install-btn" class="btn primary">Jetzt installieren</button>
+            </div>
+        </section>
+
+        <!-- Camera -->
+        <section class="card" id="camera-card">
+            <div class="card-header">
+                <div class="card-icon">📷</div>
+                <div>
+                    <h2>Kamera</h2>
+                    <p class="card-desc">Zugriff auf Geraetekamera</p>
+                </div>
+                <span id="camera-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <div class="btn-group">
+                    <button id="camera-photo-btn" class="btn">Foto aufnehmen</button>
+                    <button id="camera-video-btn" class="btn">Video starten</button>
+                </div>
+                <video id="camera-preview" autoplay playsinline style="display:none;"></video>
+                <canvas id="camera-canvas" style="display:none;"></canvas>
+                <img id="camera-result" style="display:none;" alt="Aufgenommenes Foto">
+                <button id="camera-snap-btn" class="btn accent" style="display:none;">Ausloeser</button>
+                <button id="camera-stop-btn" class="btn" style="display:none;">Stopp</button>
+            </div>
+        </section>
+
+        <!-- Geolocation -->
+        <section class="card" id="geo-card">
+            <div class="card-header">
+                <div class="card-icon">📍</div>
+                <div>
+                    <h2>Geolocation</h2>
+                    <p class="card-desc">GPS-Position ermitteln</p>
+                </div>
+                <span id="geo-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <button id="geo-btn" class="btn">Position ermitteln</button>
+                <div id="geo-result" class="result-box" style="display:none;"></div>
+            </div>
+        </section>
+
+        <!-- Vibration -->
+        <section class="card" id="vibration-card">
+            <div class="card-header">
+                <div class="card-icon">📳</div>
+                <div>
+                    <h2>Vibration</h2>
+                    <p class="card-desc">Haptisches Feedback</p>
+                </div>
+                <span id="vibration-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <div class="btn-group">
+                    <button id="vib-short-btn" class="btn">Kurz</button>
+                    <button id="vib-long-btn" class="btn">Lang</button>
+                    <button id="vib-pattern-btn" class="btn">Muster</button>
+                    <button id="vib-sos-btn" class="btn">SOS</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notifications -->
+        <section class="card" id="notify-card">
+            <div class="card-header">
+                <div class="card-icon">🔔</div>
+                <div>
+                    <h2>Benachrichtigungen</h2>
+                    <p class="card-desc">Push Notifications senden</p>
+                </div>
+                <span id="notify-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <button id="notify-permission-btn" class="btn">Berechtigung anfragen</button>
+                <button id="notify-send-btn" class="btn" disabled>Benachrichtigung senden</button>
+                <div id="notify-status" class="status-text"></div>
+            </div>
+        </section>
+
+        <!-- Device Sensors -->
+        <section class="card" id="sensors-card">
+            <div class="card-header">
+                <div class="card-icon">🧭</div>
+                <div>
+                    <h2>Geraetesensoren</h2>
+                    <p class="card-desc">Beschleunigung &amp; Orientierung</p>
+                </div>
+                <span id="sensors-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <button id="sensors-btn" class="btn">Sensoren aktivieren</button>
+                <div id="sensors-result" class="result-box" style="display:none;">
+                    <div class="sensor-grid">
+                        <div class="sensor-item">
+                            <span class="sensor-label">Beschleunigung X</span>
+                            <span id="accel-x" class="sensor-value">-</span>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Beschleunigung Y</span>
+                            <span id="accel-y" class="sensor-value">-</span>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Beschleunigung Z</span>
+                            <span id="accel-z" class="sensor-value">-</span>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Alpha (Kompass)</span>
+                            <span id="orient-alpha" class="sensor-value">-</span>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Beta (Neigung)</span>
+                            <span id="orient-beta" class="sensor-value">-</span>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Gamma (Drehung)</span>
+                            <span id="orient-gamma" class="sensor-value">-</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 3D Visualizer -->
+                <div id="sensor-visual" style="display:none;">
+                    <div class="phone-3d-container">
+                        <div id="phone-3d" class="phone-3d">
+                            <div class="phone-screen">📱</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Share API -->
+        <section class="card" id="share-card">
+            <div class="card-header">
+                <div class="card-icon">🔗</div>
+                <div>
+                    <h2>Teilen</h2>
+                    <p class="card-desc">Web Share API</p>
+                </div>
+                <span id="share-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <button id="share-btn" class="btn">Inhalt teilen</button>
+            </div>
+        </section>
+
+        <!-- Clipboard -->
+        <section class="card" id="clipboard-card">
+            <div class="card-header">
+                <div class="card-icon">📋</div>
+                <div>
+                    <h2>Zwischenablage</h2>
+                    <p class="card-desc">Clipboard API</p>
+                </div>
+                <span id="clipboard-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <div class="input-group">
+                    <input type="text" id="clipboard-input" placeholder="Text eingeben..." class="text-input">
+                    <button id="clipboard-copy-btn" class="btn">Kopieren</button>
+                </div>
+                <button id="clipboard-paste-btn" class="btn">Einfuegen</button>
+                <div id="clipboard-result" class="result-box" style="display:none;"></div>
+            </div>
+        </section>
+
+        <!-- Wake Lock -->
+        <section class="card" id="wakelock-card">
+            <div class="card-header">
+                <div class="card-icon">☀️</div>
+                <div>
+                    <h2>Bildschirm wach halten</h2>
+                    <p class="card-desc">Wake Lock API</p>
+                </div>
+                <span id="wakelock-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <button id="wakelock-btn" class="btn">Wake Lock aktivieren</button>
+                <div id="wakelock-status" class="status-text"></div>
+            </div>
+        </section>
+
+        <!-- Battery -->
+        <section class="card" id="battery-card">
+            <div class="card-header">
+                <div class="card-icon">🔋</div>
+                <div>
+                    <h2>Batteriestatus</h2>
+                    <p class="card-desc">Battery Status API</p>
+                </div>
+                <span id="battery-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <button id="battery-btn" class="btn">Status abfragen</button>
+                <div id="battery-result" class="result-box" style="display:none;">
+                    <div class="battery-visual">
+                        <div class="battery-shell">
+                            <div id="battery-fill" class="battery-fill"></div>
+                        </div>
+                        <span id="battery-percent" class="battery-percent">--%</span>
+                    </div>
+                    <div id="battery-details" class="sensor-grid"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Device Info -->
+        <section class="card" id="device-card">
+            <div class="card-header">
+                <div class="card-icon">📱</div>
+                <div>
+                    <h2>Geraeteinfo</h2>
+                    <p class="card-desc">Device &amp; Browser Infos</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <button id="device-btn" class="btn">Infos anzeigen</button>
+                <div id="device-result" class="result-box" style="display:none;"></div>
+            </div>
+        </section>
+
+        <!-- Fullscreen -->
+        <section class="card" id="fullscreen-card">
+            <div class="card-header">
+                <div class="card-icon">🖥️</div>
+                <div>
+                    <h2>Vollbild</h2>
+                    <p class="card-desc">Fullscreen API</p>
+                </div>
+                <span id="fullscreen-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <button id="fullscreen-btn" class="btn">Vollbild umschalten</button>
+            </div>
+        </section>
+
+        <!-- Screen Orientation -->
+        <section class="card" id="orientation-card">
+            <div class="card-header">
+                <div class="card-icon">🔄</div>
+                <div>
+                    <h2>Bildschirm-Orientierung</h2>
+                    <p class="card-desc">Screen Orientation API</p>
+                </div>
+                <span id="orientation-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <div id="orientation-current" class="status-text"></div>
+                <div class="btn-group">
+                    <button id="orient-portrait-btn" class="btn">Portrait sperren</button>
+                    <button id="orient-landscape-btn" class="btn">Landscape sperren</button>
+                    <button id="orient-unlock-btn" class="btn">Entsperren</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>PWA Demo App &mdash; Alle Features sind abhaengig von Browser- &amp; Geraeteunterstuetzung</p>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
