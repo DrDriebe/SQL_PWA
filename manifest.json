@@ -2,7 +2,7 @@
     "name": "PWA Demo - Android Features",
     "short_name": "PWA Demo",
     "description": "Eine Demo-App die zeigt, was PWAs auf Android alles koennen",
-    "start_url": "/",
+    "start_url": ".",
     "display": "standalone",
     "orientation": "any",
     "background_color": "#121212",
@@ -56,12 +56,12 @@
     "shortcuts": [
         {
             "name": "Kamera oeffnen",
-            "url": "/#camera-card",
+            "url": "./#camera-card",
             "icons": [{"src": "icons/icon-96.png", "sizes": "96x96"}]
         },
         {
             "name": "Position ermitteln",
-            "url": "/#geo-card",
+            "url": "./#geo-card",
             "icons": [{"src": "icons/icon-96.png", "sizes": "96x96"}]
         }
     ]

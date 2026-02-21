@@ -1,13 +1,13 @@
-const CACHE_NAME = 'pwa-demo-v1';
+const CACHE_NAME = 'pwa-demo-v2';
 const ASSETS = [
-    '/',
-    '/index.html',
-    '/style.css',
-    '/app.js',
-    '/manifest.json',
-    '/icons/icon.svg',
-    '/icons/icon-192.png',
-    '/icons/icon-512.png'
+    './',
+    './index.html',
+    './style.css',
+    './app.js',
+    './manifest.json',
+    './icons/icon.svg',
+    './icons/icon-192.png',
+    './icons/icon-512.png'
 ];
 
 // Install: Cache all static assets
@@ -68,8 +68,8 @@ self.addEventListener('push', (event) => {
     const title = data.title || 'PWA Demo';
     const options = {
         body: data.body || 'Du hast eine Benachrichtigung!',
-        icon: '/icons/icon-192.png',
-        badge: '/icons/icon-72.png',
+        icon: 'icons/icon-192.png',
+        badge: 'icons/icon-72.png',
         vibrate: [200, 100, 200]
     };
     event.waitUntil(self.registration.showNotification(title, options));
@@ -79,6 +79,6 @@ self.addEventListener('push', (event) => {
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
     event.waitUntil(
-        clients.openWindow('/')
+        clients.openWindow('./')
     );
 });
