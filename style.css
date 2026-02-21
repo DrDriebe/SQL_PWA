@@ -42,6 +42,9 @@ body {
 header {
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     padding: 1.5rem 1.25rem;
+    padding-top: calc(1.5rem + env(safe-area-inset-top, 0px));
+    padding-left: calc(1.25rem + env(safe-area-inset-left, 0px));
+    padding-right: calc(1.25rem + env(safe-area-inset-right, 0px));
     position: sticky;
     top: 0;
     z-index: 100;
@@ -87,12 +90,14 @@ header {
 /* === Main === */
 main {
     padding: 1rem;
+    padding-left: calc(1rem + env(safe-area-inset-left, 0px));
+    padding-right: calc(1rem + env(safe-area-inset-right, 0px));
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     max-width: 600px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding-bottom: 2rem;
 }
 
 /* === Cards === */
@@ -371,10 +376,24 @@ main {
     object-fit: cover;
 }
 
+/* === iOS Install Banner === */
+.ios-install-steps {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.9);
+}
+
+.ios-share-icon {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    color: var(--accent);
+}
+
 /* === Toast === */
 .toast {
     position: fixed;
-    bottom: 2rem;
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     left: 50%;
     transform: translateX(-50%) translateY(100px);
     background: var(--surface-light);

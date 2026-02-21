@@ -1,6 +1,12 @@
 // ============================================================
-// PWA Demo App - Android Features Showcase
+// PWA Demo App - Mobile Features Showcase
 // ============================================================
+
+// --- Platform Detection ---
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
 
 // --- Utility: Toast Notification ---
 function showToast(msg, duration = 2500) {
@@ -34,7 +40,9 @@ if ('serviceWorker' in navigator) {
 let deferredPrompt = null;
 const installSection = document.getElementById('install-section');
 const installBtn = document.getElementById('install-btn');
+const iosInstallSection = document.getElementById('ios-install-section');
 
+// Android/Chrome: native install prompt
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -53,6 +61,19 @@ installBtn.addEventListener('click', async () => {
 window.addEventListener('appinstalled', () => {
     showToast('App erfolgreich installiert!');
     installSection.style.display = 'none';
+});
+
+// iOS Safari: manual install instructions
+if (isIOS && !isStandalone) {
+    const dismissed = sessionStorage.getItem('ios-install-dismissed');
+    if (!dismissed) {
+        iosInstallSection.style.display = 'flex';
+    }
+}
+
+document.getElementById('ios-install-dismiss').addEventListener('click', () => {
+    iosInstallSection.style.display = 'none';
+    sessionStorage.setItem('ios-install-dismissed', '1');
 });
 
 // ============================================================
@@ -217,7 +238,11 @@ const notifySendBtn = document.getElementById('notify-send-btn');
 
 function updateNotifyStatus() {
     if (!('Notification' in window)) {
-        notifyStatus.textContent = 'Benachrichtigungen werden nicht unterstuetzt';
+        if (isIOS && !isStandalone) {
+            notifyStatus.textContent = 'Nur als installierte App verfuegbar (iOS 16.4+)';
+        } else {
+            notifyStatus.textContent = 'Benachrichtigungen werden nicht unterstuetzt';
+        }
         return;
     }
     notifyStatus.textContent = 'Status: ' + Notification.permission;
@@ -336,7 +361,7 @@ document.getElementById('share-btn').addEventListener('click', async () => {
     try {
         await navigator.share({
             title: 'PWA Demo App',
-            text: 'Schau dir an, was Progressive Web Apps auf Android alles koennen!',
+            text: 'Schau dir an, was Progressive Web Apps alles koennen!',
             url: window.location.href
         });
         showToast('Erfolgreich geteilt!');
@@ -526,7 +551,8 @@ document.getElementById('device-btn').addEventListener('click', () => {
         <strong>RTT:</strong> ${connection.rtt || '?'} ms<br>
         <strong>Data Saver:</strong> ${connection.saveData ? 'Aktiv' : 'Inaktiv'}<br>
         ` : ''}
-        <strong>Standalone PWA:</strong> ${window.matchMedia('(display-mode: standalone)').matches ? 'Ja' : 'Nein'}<br>
+        <strong>Standalone PWA:</strong> ${isStandalone ? 'Ja' : 'Nein'}<br>
+        ${isIOS ? '<strong>Plattform:</strong> iOS<br>' : ''}
         <strong>Service Worker:</strong> ${'serviceWorker' in navigator ? 'Verfuegbar' : 'Nicht verfuegbar'}<br>
     `;
     showToast('Geraeteinfo geladen');
@@ -597,8 +623,10 @@ document.getElementById('orient-unlock-btn').addEventListener('click', () => {
 // ============================================================
 window.addEventListener('load', () => {
     console.log('PWA Demo App loaded');
-    // Show install banner hint on desktop
-    if (!deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
-        // Install section stays hidden until beforeinstallprompt fires
+    if (isStandalone) {
+        document.body.classList.add('standalone');
+    }
+    if (isIOS) {
+        document.body.classList.add('ios');
     }
 });

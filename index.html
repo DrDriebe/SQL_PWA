@@ -2,34 +2,52 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta name="theme-color" content="#6200ee">
-    <meta name="description" content="PWA Demo App - Android Features Showcase">
+    <meta name="description" content="PWA Demo App - Mobile Features Showcase">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PWA Demo">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <title>PWA Demo - Android Features</title>
+    <link rel="apple-touch-icon" href="icons/icon-152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192.png">
+    <title>PWA Demo - Mobile Features</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <div class="header-content">
             <h1>PWA Demo</h1>
-            <span class="subtitle">Android Features Showcase</span>
+            <span class="subtitle">Mobile Features Showcase</span>
         </div>
         <div id="network-badge" class="badge online">Online</div>
     </header>
 
     <main>
-        <!-- Install Banner -->
+        <!-- Install Banner (Android/Chrome) -->
         <section id="install-section" class="card install-card" style="display:none;">
             <div class="card-icon">📲</div>
             <div class="card-body">
                 <h2>App installieren</h2>
                 <p>Installiere diese App auf deinem Homescreen fuer das volle Erlebnis!</p>
                 <button id="install-btn" class="btn primary">Jetzt installieren</button>
+            </div>
+        </section>
+
+        <!-- Install Banner (iOS Safari) -->
+        <section id="ios-install-section" class="card install-card" style="display:none;">
+            <div class="card-icon">📲</div>
+            <div class="card-body">
+                <h2>App installieren</h2>
+                <p class="ios-install-steps">
+                    Tippe unten auf
+                    <span class="ios-share-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    </span>
+                    (Teilen) und dann <strong>&bdquo;Zum Home-Bildschirm&ldquo;</strong>
+                </p>
+                <button id="ios-install-dismiss" class="btn primary">Verstanden</button>
             </div>
         </section>
 

@@ -1,7 +1,7 @@
 {
-    "name": "PWA Demo - Android Features",
+    "name": "PWA Demo - Mobile Features",
     "short_name": "PWA Demo",
-    "description": "Eine Demo-App die zeigt, was PWAs auf Android alles koennen",
+    "description": "Eine Demo-App die zeigt, was PWAs auf Mobilgeraeten alles koennen",
     "start_url": ".",
     "display": "standalone",
     "orientation": "any",
