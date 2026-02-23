@@ -376,6 +376,122 @@ main {
     object-fit: cover;
 }
 
+/* === TTS Controls === */
+.tts-textarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+
+.tts-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.tts-select-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.tts-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tts-label span {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.tts-select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: var(--surface-light);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: var(--on-surface);
+    font-size: 0.85rem;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%237c4dff' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
+}
+
+.tts-select:focus {
+    border-color: var(--primary-light);
+}
+
+.tts-slider-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.tts-slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.tts-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--surface-light);
+    outline: none;
+}
+
+.tts-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    cursor: pointer;
+    border: 2px solid var(--surface);
+}
+
+.tts-range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    cursor: pointer;
+    border: 2px solid var(--surface);
+}
+
+.tts-progress {
+    height: 4px;
+    background: var(--surface-light);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.tts-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--primary-light));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.15s ease;
+}
+
 /* === iOS Install Banner === */
 .ios-install-steps {
     font-size: 0.9rem;
@@ -445,6 +561,8 @@ footer {
 .card:nth-child(10) { animation-delay: 0.45s; }
 .card:nth-child(11) { animation-delay: 0.5s; }
 .card:nth-child(12) { animation-delay: 0.55s; }
+.card:nth-child(13) { animation-delay: 0.6s; }
+.card:nth-child(14) { animation-delay: 0.65s; }
 
 /* === Responsive === */
 @media (min-width: 768px) {

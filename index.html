@@ -51,6 +51,47 @@
             </div>
         </section>
 
+        <!-- Text-to-Speech -->
+        <section class="card" id="tts-card">
+            <div class="card-header">
+                <div class="card-icon">🗣️</div>
+                <div>
+                    <h2>Text-to-Speech</h2>
+                    <p class="card-desc">Vorlesen &amp; Teilen</p>
+                </div>
+                <span id="tts-support" class="support-badge"></span>
+            </div>
+            <div class="card-body">
+                <textarea id="tts-text" class="text-input tts-textarea" rows="4" placeholder="Text eingeben oder einfuegen..."></textarea>
+                <div class="tts-controls">
+                    <div class="tts-select-row">
+                        <label class="tts-label" for="tts-voice">Stimme</label>
+                        <select id="tts-voice" class="tts-select"></select>
+                    </div>
+                    <div class="tts-slider-row">
+                        <div class="tts-slider-group">
+                            <label class="tts-label">Tempo <span id="tts-rate-val">1.0x</span></label>
+                            <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1" class="tts-range">
+                        </div>
+                        <div class="tts-slider-group">
+                            <label class="tts-label">Tonhoehe <span id="tts-pitch-val">1.0</span></label>
+                            <input type="range" id="tts-pitch" min="0.5" max="2" step="0.1" value="1" class="tts-range">
+                        </div>
+                    </div>
+                </div>
+                <div id="tts-progress" class="tts-progress" style="display:none;">
+                    <div id="tts-progress-bar" class="tts-progress-bar"></div>
+                </div>
+                <div class="btn-group">
+                    <button id="tts-play-btn" class="btn accent">Vorlesen</button>
+                    <button id="tts-pause-btn" class="btn" style="display:none;">Pause</button>
+                    <button id="tts-stop-btn" class="btn" style="display:none;">Stopp</button>
+                    <button id="tts-share-btn" class="btn">Teilen</button>
+                </div>
+                <div id="tts-status" class="status-text"></div>
+            </div>
+        </section>
+
         <!-- Camera -->
         <section class="card" id="camera-card">
             <div class="card-header">

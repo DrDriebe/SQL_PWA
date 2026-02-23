@@ -619,6 +619,186 @@ document.getElementById('orient-unlock-btn').addEventListener('click', () => {
 });
 
 // ============================================================
+// 16. Text-to-Speech
+// ============================================================
+const ttsSupported = 'speechSynthesis' in window;
+setSupport('tts-support', ttsSupported);
+
+const ttsText = document.getElementById('tts-text');
+const ttsVoiceSelect = document.getElementById('tts-voice');
+const ttsRate = document.getElementById('tts-rate');
+const ttsPitch = document.getElementById('tts-pitch');
+const ttsRateVal = document.getElementById('tts-rate-val');
+const ttsPitchVal = document.getElementById('tts-pitch-val');
+const ttsPlayBtn = document.getElementById('tts-play-btn');
+const ttsPauseBtn = document.getElementById('tts-pause-btn');
+const ttsStopBtn = document.getElementById('tts-stop-btn');
+const ttsShareBtn = document.getElementById('tts-share-btn');
+const ttsStatus = document.getElementById('tts-status');
+const ttsProgress = document.getElementById('tts-progress');
+const ttsProgressBar = document.getElementById('tts-progress-bar');
+
+let ttsVoices = [];
+
+function loadVoices() {
+    ttsVoices = speechSynthesis.getVoices();
+    ttsVoiceSelect.innerHTML = '';
+
+    // Sort: German first, then English, then rest
+    const sorted = [...ttsVoices].sort((a, b) => {
+        const aDE = a.lang.startsWith('de');
+        const bDE = b.lang.startsWith('de');
+        const aEN = a.lang.startsWith('en');
+        const bEN = b.lang.startsWith('en');
+        if (aDE && !bDE) return -1;
+        if (!aDE && bDE) return 1;
+        if (aEN && !bEN) return -1;
+        if (!aEN && bEN) return 1;
+        return a.name.localeCompare(b.name);
+    });
+
+    sorted.forEach((voice) => {
+        const opt = document.createElement('option');
+        opt.value = voice.name;
+        opt.textContent = voice.name + ' (' + voice.lang + ')';
+        if (voice.default) opt.selected = true;
+        ttsVoiceSelect.appendChild(opt);
+    });
+
+    // Auto-select first German voice if no default
+    const deVoice = sorted.find(v => v.lang.startsWith('de'));
+    if (deVoice) {
+        ttsVoiceSelect.value = deVoice.name;
+    }
+}
+
+if (ttsSupported) {
+    loadVoices();
+    speechSynthesis.addEventListener('voiceschanged', loadVoices);
+}
+
+ttsRate.addEventListener('input', () => {
+    ttsRateVal.textContent = parseFloat(ttsRate.value).toFixed(1) + 'x';
+});
+
+ttsPitch.addEventListener('input', () => {
+    ttsPitchVal.textContent = parseFloat(ttsPitch.value).toFixed(1);
+});
+
+function ttsShowPlaying(playing) {
+    ttsPlayBtn.style.display = playing ? 'none' : 'inline-flex';
+    ttsPauseBtn.style.display = playing ? 'inline-flex' : 'none';
+    ttsStopBtn.style.display = playing ? 'inline-flex' : 'none';
+    ttsProgress.style.display = playing ? 'block' : 'none';
+}
+
+ttsPlayBtn.addEventListener('click', () => {
+    const text = ttsText.value.trim();
+    if (!text) {
+        showToast('Bitte Text eingeben');
+        return;
+    }
+    if (!ttsSupported) {
+        showToast('Text-to-Speech nicht verfuegbar');
+        return;
+    }
+
+    // Resume if paused
+    if (speechSynthesis.paused) {
+        speechSynthesis.resume();
+        ttsShowPlaying(true);
+        ttsPauseBtn.textContent = 'Pause';
+        ttsStatus.textContent = 'Liest vor...';
+        return;
+    }
+
+    speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    const selectedVoice = ttsVoices.find(v => v.name === ttsVoiceSelect.value);
+    if (selectedVoice) utterance.voice = selectedVoice;
+    utterance.rate = parseFloat(ttsRate.value);
+    utterance.pitch = parseFloat(ttsPitch.value);
+
+    // Progress tracking via boundary events
+    const textLen = text.length;
+    utterance.addEventListener('boundary', (e) => {
+        if (e.charIndex !== undefined && textLen > 0) {
+            const pct = Math.min(100, Math.round((e.charIndex / textLen) * 100));
+            ttsProgressBar.style.width = pct + '%';
+        }
+    });
+
+    utterance.addEventListener('start', () => {
+        ttsShowPlaying(true);
+        ttsStatus.textContent = 'Liest vor...';
+        ttsProgressBar.style.width = '0%';
+    });
+
+    utterance.addEventListener('end', () => {
+        ttsShowPlaying(false);
+        ttsProgressBar.style.width = '100%';
+        ttsStatus.textContent = 'Fertig';
+        setTimeout(() => {
+            ttsProgress.style.display = 'none';
+        }, 1000);
+    });
+
+    utterance.addEventListener('error', (e) => {
+        ttsShowPlaying(false);
+        ttsStatus.textContent = 'Fehler: ' + e.error;
+    });
+
+    speechSynthesis.speak(utterance);
+});
+
+ttsPauseBtn.addEventListener('click', () => {
+    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+        speechSynthesis.pause();
+        ttsPauseBtn.textContent = 'Weiter';
+        ttsPlayBtn.style.display = 'inline-flex';
+        ttsPauseBtn.style.display = 'none';
+        ttsStatus.textContent = 'Pausiert';
+    }
+});
+
+ttsStopBtn.addEventListener('click', () => {
+    speechSynthesis.cancel();
+    ttsShowPlaying(false);
+    ttsStatus.textContent = 'Gestoppt';
+    ttsProgressBar.style.width = '0%';
+});
+
+// Share: Web Share API on mobile, clipboard fallback on desktop
+ttsShareBtn.addEventListener('click', async () => {
+    const text = ttsText.value.trim();
+    if (!text) {
+        showToast('Bitte zuerst Text eingeben');
+        return;
+    }
+
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'TTS Text', text: text });
+            showToast('Text geteilt!');
+        } catch (err) {
+            if (err.name !== 'AbortError') {
+                showToast('Teilen fehlgeschlagen');
+            }
+        }
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+            await navigator.clipboard.writeText(text);
+            showToast('Text in Zwischenablage kopiert!');
+        } catch (err) {
+            showToast('Kopieren fehlgeschlagen');
+        }
+    } else {
+        showToast('Teilen nicht verfuegbar');
+    }
+});
+
+// ============================================================
 // Feature Support Check on Load
 // ============================================================
 window.addEventListener('load', () => {
